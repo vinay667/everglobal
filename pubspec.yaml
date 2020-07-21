@@ -1,0 +1,75 @@
+name: everglobe
+description: A new Flutter application.
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  carousel_pro: ^1.0.0
+  http: ^0.12.0+4
+  shared_preferences: ^0.5.7+3
+  toast: ^0.1.5
+  connectivity: ^0.4.2
+  url_launcher: ^5.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/intro_screen_1.png
+    - images/profile.png
+    - images/intro_screen_2.png
+    - images/intro_screen_3.png
+    - images/app_l.png
+    - images/user.png
+    - images/register.png
+    - images/user_type.png
+    - images/edit.png
+    - images/delete.png
+    - images/splash_screen.png
+    - images/girl_dp.jpg
+    - images/launcher_icon.png
+    - images/upload.png
+    - images/whatsapp2.png
+    - images/call2.png
+    - images/mail2.png
+    - images/bg_sign_in.png
+    - images/close.png
+    - images/hamber2.png
+    - images/icon_search.png
+    - images/whatsapp.png
+    - images/mail.png
+    - images/call.png
+    - images/dummy1.jpg
+    - images/dummy2.jpg
+    - images/dummy3.jpg
+    - images/dummy4.jpg
+    - images/dummy5.jpg
+    - images/dummy6.jpg
+    - images/dummy7.jpg
+    - images/dummy8.jpg
+    - images/dummy9.jpg
+    - images/dummy10.jpg
+
+  fonts:
+    - family: GilroySemiBold
+      fonts:
+        - asset: fonts/gilroy_semibold.otf
