@@ -177,104 +177,127 @@ class ProfileState extends State<ProfileScreen> {
                             elevation: 3,
                             child: Padding(
                               padding: EdgeInsets.only(top: 5, bottom: 5),
-                              child: Row(
+                              child: Column(
                                 children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.only(left: 5),
-                                    child: FadeInImage.assetNetwork(
-                                      height: 40,
-                                      width: 60.0,
-                                      placeholder: 'images/launcher_icon.png',
-                                      image: AppConstants.imageBaseUrl +
-                                          list[position]['ImgPath'],
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Container(
-                                      width: 100,
-                                      padding: EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        list[position]['vchTitle'],
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: MyColor.greyTextColor,
-                                            fontFamily: 'GilroySemibold'),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      )),
-                                  SizedBox(width: 7),
-                                  GestureDetector(
-                                    onTap: () {
-                                      deleteUserPost(list[position]
-                                              ['intProductId']
-                                          .toString());
-                                    },
-                                    child: Container(
-                                        width: 22,
-                                        height: 22,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: MyColor.lightGreyTextColor,
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: EdgeInsets.only(left: 5),
+                                        child: FadeInImage.assetNetwork(
+                                          height: 40,
+                                          width: 60.0,
+                                          placeholder: 'images/launcher_icon.png',
+                                          image: AppConstants.imageBaseUrl +
+                                              list[position]['ImgPath'],
                                         ),
-                                        child: Center(
-                                            child: Image.asset(
-                                          'images/delete.png',
-                                          width: 13,
-                                          height: 13,
-                                          color: Colors.black,
-                                        ))),
-                                  ),
-                                  SizedBox(width: 7),
-                                  GestureDetector(
-                                    onTap: (){
-
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>BuyScreen('UPDATE',list[position]['intProductId'].toString(),list[position]['vchTitle'],list[position]['vchCategory'],list[position]['vchDescriptions'],list[position]['vchUserType'])));
-
-
-                                    },
-
-                                    child: Container(
-                                      width: 22,
-                                      height: 22,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: MyColor.lightGreyTextColor,
                                       ),
-                                      child: Center(
-                                          child: Image.asset(
-                                            'images/edit.png',
-                                            width: 13,
-                                            height: 13,
-                                            color: Colors.black,
+                                      SizedBox(width: 5),
+                                      Container(
+                                          width: 100,
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            list[position]['vchTitle'],
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: MyColor.greyTextColor,
+                                                fontFamily: 'GilroySemibold'),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                           )),
+                                      SizedBox(width: 7),
+                                      GestureDetector(
+                                        onTap: () {
+                                          deleteUserPost(list[position]
+                                          ['intProductId']
+                                              .toString());
+                                        },
+                                        child: Container(
+                                            width: 22,
+                                            height: 22,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: MyColor.lightGreyTextColor,
+                                            ),
+                                            child: Center(
+                                                child: Image.asset(
+                                                  'images/delete.png',
+                                                  width: 13,
+                                                  height: 13,
+                                                  color: Colors.black,
+                                                ))),
+                                      ),
+                                      SizedBox(width: 7),
+                                      GestureDetector(
+                                        onTap: (){
+
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>BuyScreen('UPDATE',list[position]['intProductId'].toString(),list[position]['vchTitle'],list[position]['vchCategory'],list[position]['vchDescriptions'],list[position]['vchUserType'])));
+
+
+                                        },
+
+                                        child: Container(
+                                          width: 22,
+                                          height: 22,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: MyColor.lightGreyTextColor,
+                                          ),
+                                          child: Center(
+                                              child: Image.asset(
+                                                'images/edit.png',
+                                                width: 13,
+                                                height: 13,
+                                                color: Colors.black,
+                                              )),
+                                        ),
+
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      GestureDetector(
+                                        onTap: (){
+                                          Navigator.push(context, CupertinoPageRoute(builder: (context)=>ViewItemScreen(list[position]['intProductId'].toString())));
+
+                                        },
+
+                                        child:  Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: MyColor.classyGreen,
+                                            ),
+                                            width: 75,
+                                            height: 30,
+                                            child: Center(
+                                              child: TextWidget(
+                                                  'View Item', Colors.white, 13),
+                                            )),
+
+
+                                      )
+                                    ],
+                                  ),
+
+                                  Container(
+                                    width:double.infinity,
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: Text(list[position]['vchUserType'],style: TextStyle(fontSize: 14,color: Colors.blue),
+                                      textAlign: TextAlign.right,
+
+
+
                                     ),
 
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                 GestureDetector(
-                                   onTap: (){
-                                     Navigator.push(context, CupertinoPageRoute(builder: (context)=>ViewItemScreen(list[position]['intProductId'].toString())));
 
-                                   },
-
-                                   child:  Container(
-                                       decoration: BoxDecoration(
-                                         borderRadius: BorderRadius.circular(5),
-                                         color: MyColor.classyGreen,
-                                       ),
-                                       width: 75,
-                                       height: 30,
-                                       child: Center(
-                                         child: TextWidget(
-                                             'View Item', Colors.white, 13),
-                                       )),
+                                  )
 
 
-                                 )
+
+
                                 ],
-                              ),
+
+
+                              )
                             ));
                       })
                 ],
@@ -289,7 +312,7 @@ class ProfileState extends State<ProfileScreen> {
   getUserData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      userEmail = prefs.getString('email');
+      userEmail = prefs.getString('company');
       userId = prefs.getString('userid');
       registeredOn = prefs.getString('registered');
       userType = prefs.getString('usertype');

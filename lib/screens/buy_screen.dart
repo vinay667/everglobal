@@ -1,6 +1,7 @@
 
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:everglobe/colors/colors.dart';
 import 'package:everglobe/utils/api_dialog.dart';
@@ -9,6 +10,7 @@ import 'package:everglobe/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 
 class BuyScreen extends StatefulWidget {
@@ -19,12 +21,15 @@ class BuyScreen extends StatefulWidget {
 }
 
 class BuyScreenState extends State<BuyScreen> {
-  String titleName,userid,productTitle,productCategory,productDes,userType;
+  File _image;
+  final picker = ImagePicker();
+  String titleName,userid,productTitle,productCategory,productDes,userType,imageAsBase64;
   BuyScreenState(this.titleName,this.userid,this.productTitle,this.productCategory,this.productDes,this.userType);
   var textControllerPName = new TextEditingController();
   var textControllerDescriptions = new TextEditingController();
   GlobalKey<ScaffoldState> key = new GlobalKey<ScaffoldState>();
   String dropdownValue = 'Select Category';
+  String dropdownValue2 = 'Select Sub Category';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,6 +194,72 @@ class BuyScreenState extends State<BuyScreen> {
                   ),
                 ),
 
+
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(top: 12, left: 56),
+                  child: Text(
+                    'Sub Category:*',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: MyColor.greyTextColor,
+                        decoration: TextDecoration.none,
+                        fontFamily: 'GilroySemibold'),
+                  ),
+                ),
+                SizedBox(height: 5),
+
+                Padding(
+                  padding: EdgeInsets.only(left: 40, right: 40),
+                  child: Container(
+                      padding: EdgeInsets.only(left: 20,right: 15),
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: MyColor.themeColor,
+                      ),
+
+                      // dropdown below..
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          canvasColor: Colors.blue.shade200,
+                        ),
+                        child: DropdownButton<String>(
+                            value: dropdownValue2,
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                            iconSize: 30,
+                            underline: SizedBox(),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropdownValue2 = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'Select Sub Category',
+                              'Mask',
+                              'Covid 19 Testing Kits',
+                              'Coveralls/PPE Kits',
+                              'Gloves',
+                              'Googles/Face Shields',
+                              'Shoe Cover',
+                              'Thermometers',
+                              'Vaentilators',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,style: TextStyle(color: Colors.white),),
+                              );
+                            }).toList()),
+
+
+                      )
+                  ),
+                ),
+
+
+
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.only(top: 10, left: 56),
@@ -267,6 +338,7 @@ class BuyScreenState extends State<BuyScreen> {
 
                 GestureDetector(
                   onTap: (){
+                    getImage();
                   },
 
                   child:  Padding(
@@ -290,17 +362,6 @@ class BuyScreenState extends State<BuyScreen> {
 
                 SizedBox(height: 7),
 
-                Container(
-                  child: Center(
-                    child: TextWidget('Choose a file',Colors.black87,14),
-
-
-                  ),
-
-
-
-                ),
-                SizedBox(height: 7),
                 GestureDetector(
                   onTap: (){
 
@@ -404,6 +465,14 @@ class BuyScreenState extends State<BuyScreen> {
       'vchDescriptions': textControllerDescriptions.text.toString(),
       'vchCategory': dropdownValue,
       'vchUserType': userType,
+      'vchFileName':'file1.jpg',
+      'IsActive':'true',
+      'intCreatedBy':'1',
+      'vchIPAddress':'nnm',
+      'Mode':0,
+      'intProductId':0,
+      'nvrFile':imageAsBase64
+
     };
     print(collectedAuthData);
     APIDialog.showAlertDialog(context, 'Please wait...');
@@ -434,8 +503,7 @@ class BuyScreenState extends State<BuyScreen> {
       message = errorMessage.toString();
       print(message+'op');
       Navigator.pop(context);
-      Toast.show('ProductDetails inserted successfully.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM,backgroundColor: Colors.lightBlue);
-      Navigator.pop(context,true);
+    
     }
   }
   Future<Map<String, dynamic>> updateProduct() async {
@@ -477,8 +545,7 @@ class BuyScreenState extends State<BuyScreen> {
       message = errorMessage.toString();
       Navigator.pop(context);
       print(message);
-      Toast.show('ProductDetails Updated successfully.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM,backgroundColor: Colors.lightBlue);
-      Navigator.pop(context,true);
+     
     }
   }
 
@@ -506,6 +573,23 @@ class BuyScreenState extends State<BuyScreen> {
 
 
   }
+
+  Future getImage() async {
+
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile.path);
+      List<int> imageBytes = _image.readAsBytesSync();
+      imageAsBase64 = base64Encode(imageBytes).toString();
+
+    });
+    Toast.show('File Uploaded !!', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM,backgroundColor: Colors.green,);
+
+    print(imageAsBase64);
+
+
+  }
+
 }
 
 

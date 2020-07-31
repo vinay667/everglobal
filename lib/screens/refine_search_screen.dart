@@ -51,7 +51,6 @@ class RefineSearchState extends State<RefineSearchScreen>
          children: <Widget>[
            Image.asset('images/bg_sign_in.png', fit: BoxFit.fill),
            ListView(
-             controller: _scrollController,
              children: <Widget>[
                SizedBox(height: 55),
                Container(
@@ -67,6 +66,89 @@ class RefineSearchState extends State<RefineSearchScreen>
                    ),
                  ),
                ),
+
+               searchList2.length>0?Padding(
+                 padding: EdgeInsets.only(left: 30,top: 15),
+                 child: Text('Search Results for '+searchText,style: TextStyle(fontSize: 17,color: Colors.brown)),
+               ):Text(''),
+               SizedBox(height: 8),
+               Container(
+                   margin: EdgeInsets.only(right: 15),
+                   child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,
+                       childAspectRatio: 2/2.5/*MediaQuery.of(context).size.width/(MediaQuery.of(context).size.height/4)*/
+                   ),
+                       itemCount: searchList2.length,
+                       shrinkWrap: true,
+                       physics: NeverScrollableScrollPhysics(),
+                       itemBuilder: (BuildContext context,int position)
+                       {
+
+                         return GestureDetector(
+                           onTap: (){
+                             Navigator.push(context, CupertinoPageRoute(builder: (context)=>ViewItemScreen(searchList2[position]['intProductId'].toString())));
+                           },
+
+                           child: Container(
+                             margin: EdgeInsets.only(left: 20),
+                             child: Column(
+                               children: <Widget>[
+                                 Container(
+                                   height:60,
+                                   decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(10),
+                                     color: MyColor.themeColor,
+                                   ),
+
+                                   child: Center(
+
+                                       child:  Padding(
+                                         padding: EdgeInsets.all(5),
+                                         child: ClipRRect(
+                                           borderRadius: BorderRadius.circular(8.0),
+                                           child: FadeInImage.assetNetwork(
+                                             height: 45.0,
+                                             width: 55.0,
+                                             placeholder: 'images/launcher_icon.png',
+                                             image: AppConstants.imageBaseUrl+searchList2[position]['ImgPath'],
+                                           ),
+                                         ),
+                                       )
+
+                                   ),
+
+
+                                 ),
+
+
+
+
+                                 SizedBox(height:5),
+
+                                 Text(
+                                   searchList2[position]['vchTitle'],
+                                   style: TextStyle(fontSize: 12,color: MyColor.greyTextColor,fontFamily: 'GilroySemibold'),
+                                   maxLines: 2,
+                                   overflow: TextOverflow.ellipsis,
+                                 )
+
+
+                               ],
+
+
+
+                             ),
+                           ),
+                         );
+
+                       })
+
+
+               ),
+
+
+
+
+
                SizedBox(height: 25),
 
                Container(
@@ -584,84 +666,7 @@ SizedBox(height: 5,),
 
                ),
 
-               SizedBox(height: 20),
-               searchList2.length>0?Padding(
-                 padding: EdgeInsets.only(left: 30),
-                 child: Text('Search Results',style: TextStyle(fontSize: 17,color: Colors.brown)),
-               ):Text(''),
-               SizedBox(height: 8),
-               Container(
-                 margin: EdgeInsets.only(right: 15),
-                 child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,
-                     childAspectRatio: 2/2.5/*MediaQuery.of(context).size.width/(MediaQuery.of(context).size.height/4)*/
-                 ),
-                     itemCount: searchList2.length,
-                     shrinkWrap: true,
-                     physics: NeverScrollableScrollPhysics(),
-                     itemBuilder: (BuildContext context,int position)
-                     {
 
-                       return GestureDetector(
-                         onTap: (){
-                           Navigator.push(context, CupertinoPageRoute(builder: (context)=>ViewItemScreen(searchList2[position]['intProductId'].toString())));
-                         },
-
-                         child: Container(
-                           margin: EdgeInsets.only(left: 20),
-                           child: Column(
-                             children: <Widget>[
-                               Container(
-                                 height:60,
-                                 decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(10),
-                                   color: MyColor.themeColor,
-                                 ),
-
-                                 child: Center(
-
-                                     child:  Padding(
-                                       padding: EdgeInsets.all(5),
-                                       child: ClipRRect(
-                                         borderRadius: BorderRadius.circular(8.0),
-                                         child: FadeInImage.assetNetwork(
-                                           height: 45.0,
-                                           width: 55.0,
-                                           placeholder: 'images/launcher_icon.png',
-                                           image: AppConstants.imageBaseUrl+searchList2[position]['ImgPath'],
-                                         ),
-                                       ),
-                                     )
-
-                                 ),
-
-
-                               ),
-
-
-
-
-                               SizedBox(height:5),
-
-                               Text(
-                                 searchList2[position]['vchTitle'],
-                                 style: TextStyle(fontSize: 12,color: MyColor.greyTextColor,fontFamily: 'GilroySemibold'),
-                                 maxLines: 2,
-                                 overflow: TextOverflow.ellipsis,
-                               )
-
-
-                             ],
-
-
-
-                           ),
-                         ),
-                       );
-
-                     })
-
-
-               ),
 
 
                SizedBox(height: 10,),
@@ -710,7 +715,7 @@ SizedBox(height: 5,),
             searchList2.clear();
           }
         searchList2=fetchResponse['Response']['SearchPosts'];
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+       // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
       });
 
 
@@ -775,6 +780,7 @@ SizedBox(height: 5,),
   Future<Map<String, dynamic>> keySearch() async {
     APIDialog.showAlertDialog(context, 'Searching...');
 
+    print(searchText+'efef');
     String message = '';
     try {
       http.Response response;
@@ -785,13 +791,14 @@ SizedBox(height: 5,),
       print(fetchResponse);
       Navigator.of(context, rootNavigator: true).pop();
 
+      if(searchList2.length!=0)
+      {
+        searchList2.clear();
+
+      }
       setState(() {
-        if(searchList2.length!=0)
-        {
-          searchList2.clear();
-        }
         searchList2=fetchResponse['Response']['SearchPosts'];
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        //_scrollController.jumpTo(_scrollController.position.maxScrollExtent);
       });
       if(searchList2.length==0)
       {

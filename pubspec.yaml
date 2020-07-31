@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,6 +26,7 @@ dependencies:
   toast: ^0.1.5
   connectivity: ^0.4.2
   url_launcher: ^5.5.0
+  image_picker: ^0.6.7+4
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,23 @@ flutter:
     - images/dummy8.jpg
     - images/dummy9.jpg
     - images/dummy10.jpg
+    - images/01.png
+    - images/02.png
+    - images/03.png
+    - images/04.png
+    - images/05.png
+    - images/06.png
+    - images/07.png
+    - images/08.png
+    - images/09.png
+    - images/10.png
+    - images/11.png
+    - images/12.png
+    - images/13.png
+    - images/14.png
+    - images/15.png
+    - images/phone99.png
+    - images/other.jpg
 
   fonts:
     - family: GilroySemiBold

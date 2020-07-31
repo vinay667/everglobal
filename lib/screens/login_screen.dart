@@ -31,7 +31,14 @@ class LoginPageState extends State<LoginScreen> {
             Image.asset('images/bg_sign_in.png', fit: BoxFit.fill),
             Column(
               children: <Widget>[
-                SizedBox(height: 55,),
+                SizedBox(height: 25),
+
+
+
+                Image.asset('images/app_l.png',width: 80,height: 80,),
+
+
+                SizedBox(height: 15),
                 Container(
                   width: double.infinity,
                   child: Center(
@@ -41,7 +48,7 @@ class LoginPageState extends State<LoginScreen> {
 
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 15),
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.only(top: 20, left: 56),
@@ -249,9 +256,9 @@ class LoginPageState extends State<LoginScreen> {
                     children: <Widget>[
 
                       TextWidget(
-                          'Dont have a account?', MyColor.greyTextColor, 14),
+                          "Don't  have account?", MyColor.greyTextColor, 14),
                       Text(
-                        'Sign Up', style: TextStyle(
+                        'Sign Up Here', style: TextStyle(
                           fontSize: 15,
                           color: Colors.black87,
                           fontWeight: FontWeight.bold
@@ -308,7 +315,7 @@ class LoginPageState extends State<LoginScreen> {
       else
         {
           print(fetchResponse['Response']['UserDetails'][0]['vchUserType']+'yui');
-          _saveUserDetail(fetchResponse['Response']['UserDetails'][0]['vchUserID'],fetchResponse['Response']['UserDetails'][0]['vchUserType'], fetchResponse['Response']['UserDetails'][0]['intUserID'].toString(),fetchResponse['Response']['UserDetails'][0]['vchUserID'],fetchResponse['Response']['UserDetails'][0]['dtCreatedDate'].toString(),);
+          _saveUserDetail(fetchResponse['Response']['UserDetails'][0]['vchUserID'],fetchResponse['Response']['UserDetails'][0]['vchUserType'], fetchResponse['Response']['UserDetails'][0]['intUserID'].toString(),fetchResponse['Response']['UserDetails'][0]['vchUserID'],fetchResponse['Response']['UserDetails'][0]['dtCreatedDate'].toString(),fetchResponse['Response']['UserDetails'][0]['vchCompanyName']);
           Toast.show('Login Successfully !', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM,backgroundColor: Colors.lightBlue,);
           Navigator.pushAndRemoveUntil(
               context,
@@ -324,7 +331,7 @@ class LoginPageState extends State<LoginScreen> {
     }
   }
 
-  _saveUserDetail(String email,String usertype,String userId,String userName,String registeredOn)
+  _saveUserDetail(String email,String usertype,String userId,String userName,String registeredOn,String companyName)
   async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('email', email);
@@ -332,6 +339,7 @@ class LoginPageState extends State<LoginScreen> {
     prefs.setString('userid', userId);
     prefs.setString('username', userName);
     prefs.setString('registered', registeredOn);
+    prefs.setString('company', companyName);
   }
 
 /*  void checkInternetAPIcall() async {

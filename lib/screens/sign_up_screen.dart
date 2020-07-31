@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:everglobe/colors/colors.dart';
 import 'package:everglobe/utils/api_dialog.dart';
 import 'package:everglobe/utils/no_internet_check.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -19,9 +21,11 @@ class SignUpSreen extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUpSreen> {
+  File _image;
+  final picker = ImagePicker();
   String callbackType;
   SignUpState(this.callbackType);
-  String userId='';
+  String userId='',imageAsBase64;
   GlobalKey<ScaffoldState> key = new GlobalKey<ScaffoldState>();
   String dropdownValue = 'Select User Type';
   List<String> countryList=[];
@@ -81,7 +85,7 @@ class SignUpState extends State<SignUpSreen> {
                   width: double.infinity,
                   padding: EdgeInsets.only(top: 20, left: 56),
                   child: Text(
-                    'User Name/Email',
+                    'User Name (Email)',
                     style: TextStyle(
                         fontSize: 16,
                         color: MyColor.greyTextColor,
@@ -283,55 +287,7 @@ class SignUpState extends State<SignUpSreen> {
                   ),
                 ),
 
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.only(top: 10, left: 56),
-                  child: Text(
-                    'Products',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: MyColor.greyTextColor,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'GilroySemibold'),
-                  ),
-                ),
-                Container(
-                  height: 55,
-                  width: double.infinity,
-                  child: Stack(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 40, right: 40, top: 5),
-                        child: Container(
-                          child: TextFormField(
-                            style: TextStyle(
-                                color: Colors.black.withOpacity(0.7),
-                                fontSize: 15,
-                                decoration: TextDecoration.none,
-                                fontFamily: 'GilroySemibold'),
-                            controller: textControllerProducts,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 10.0),
-                              border: InputBorder.none,
-                              hintText: 'Products',
-                              hintStyle: TextStyle(
-                                  color: MyColor.lightGreyTextColor,
-                                  fontSize: 15,
-                                  decoration: TextDecoration.none,
-                                  fontFamily: 'GilroySemibold'),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border:
-                                Border.all(color: MyColor.boxBorder, width: 1),
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+
 
                 Container(
                   width: double.infinity,
@@ -437,9 +393,9 @@ class SignUpState extends State<SignUpSreen> {
 
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.only(top: 12, left: 56),
+                  padding: EdgeInsets.only(top: 10, left: 56),
                   child: Text(
-                    'Country',
+                    'City',
                     style: TextStyle(
                         fontSize: 16,
                         color: MyColor.greyTextColor,
@@ -447,38 +403,41 @@ class SignUpState extends State<SignUpSreen> {
                         fontFamily: 'GilroySemibold'),
                   ),
                 ),
-                SizedBox(height: 5),
-
-                Padding(
-                  padding: EdgeInsets.only(left: 40, right: 40),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10),
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: MyColor.boxBorder, width: 1),
-                      color: Colors.white,
-                    ),
-
-                    // dropdown below..
-                    child: DropdownButton<String>(
-                        value: dropdownValueCountry,
-                        isExpanded: true,
-                        icon: Icon(Icons.arrow_drop_down),
-                        iconSize: 30,
-                        underline: SizedBox(),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValueCountry = newValue;
-                          });
-                        },
-                        items: countryList.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList()),
+                Container(
+                  height: 55,
+                  width: double.infinity,
+                  child: Stack(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 40, right: 40, top: 5),
+                        child: Container(
+                          child: TextFormField(
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 15,
+                                decoration: TextDecoration.none,
+                                fontFamily: 'GilroySemibold'),
+                            controller: textControllerCity,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(left: 10.0),
+                              border: InputBorder.none,
+                              hintText: 'Enter City name',
+                              hintStyle: TextStyle(
+                                  color: MyColor.lightGreyTextColor,
+                                  fontSize: 15,
+                                  decoration: TextDecoration.none,
+                                  fontFamily: 'GilroySemibold'),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            border:
+                            Border.all(color: MyColor.boxBorder, width: 1),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
@@ -523,7 +482,7 @@ class SignUpState extends State<SignUpSreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             border:
-                                Border.all(color: MyColor.boxBorder, width: 1),
+                            Border.all(color: MyColor.boxBorder, width: 1),
                             color: Colors.white,
                           ),
                         ),
@@ -534,9 +493,55 @@ class SignUpState extends State<SignUpSreen> {
 
                 Container(
                   width: double.infinity,
+                  padding: EdgeInsets.only(top: 12, left: 56),
+                  child: Text(
+                    'Country',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: MyColor.greyTextColor,
+                        decoration: TextDecoration.none,
+                        fontFamily: 'GilroySemibold'),
+                  ),
+                ),
+                SizedBox(height: 5),
+
+                Padding(
+                  padding: EdgeInsets.only(left: 40, right: 40),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10),
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: MyColor.boxBorder, width: 1),
+                      color: Colors.white,
+                    ),
+
+                    // dropdown below..
+                    child: DropdownButton<String>(
+                        value: dropdownValueCountry,
+                        isExpanded: true,
+                        icon: Icon(Icons.arrow_drop_down),
+                        iconSize: 30,
+                        underline: SizedBox(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownValueCountry = newValue;
+                          });
+                        },
+                        items: countryList.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList()),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
                   padding: EdgeInsets.only(top: 10, left: 56),
                   child: Text(
-                    'City',
+                    'Products',
                     style: TextStyle(
                         fontSize: 16,
                         color: MyColor.greyTextColor,
@@ -558,11 +563,11 @@ class SignUpState extends State<SignUpSreen> {
                                 fontSize: 15,
                                 decoration: TextDecoration.none,
                                 fontFamily: 'GilroySemibold'),
-                            controller: textControllerCity,
+                            controller: textControllerProducts,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.only(left: 10.0),
                               border: InputBorder.none,
-                              hintText: 'Enter City name',
+                              hintText: 'Products',
                               hintStyle: TextStyle(
                                   color: MyColor.lightGreyTextColor,
                                   fontSize: 15,
@@ -573,7 +578,7 @@ class SignUpState extends State<SignUpSreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             border:
-                                Border.all(color: MyColor.boxBorder, width: 1),
+                            Border.all(color: MyColor.boxBorder, width: 1),
                             color: Colors.white,
                           ),
                         ),
@@ -581,6 +586,10 @@ class SignUpState extends State<SignUpSreen> {
                     ],
                   ),
                 ),
+
+
+
+
 
                 Container(
                   width: double.infinity,
@@ -1090,17 +1099,25 @@ class SignUpState extends State<SignUpSreen> {
                       ),
                     ),
                     SizedBox(width: 25),
-                    Container(
-                        margin: EdgeInsets.only(top: 10),
-                        height: 30,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: MyColor.lightGreyTextColor,
-                        ),
-                        child: Center(
-                          child: TextWidget('Upload', Colors.black, 12),
-                        )),
+                    GestureDetector(
+                      onTap: (){
+                        getImage();
+                      },
+                      child:Container(
+                          margin: EdgeInsets.only(top: 10),
+                          height: 30,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: MyColor.lightGreyTextColor,
+                          ),
+                          child: Center(
+                            child: TextWidget('Upload', Colors.black, 12),
+                          )),
+
+
+
+                    )
                   ],
                 ),
 
@@ -1195,6 +1212,8 @@ class SignUpState extends State<SignUpSreen> {
       'vchWeChatCountryCode': weNumber,
       'vchProduct': textControllerProducts.text,
       'vchState': textControllerState.text,
+      'vchFileName':'File2.jpg',
+      'nvrFile':imageAsBase64,
 
       //'nvrFile': 'textControllerState',
     };
@@ -1221,8 +1240,7 @@ class SignUpState extends State<SignUpSreen> {
       message = errorMessage.toString();
       print(message);
       Navigator.of(context, rootNavigator: true).pop();
-      Toast.show('User registered successfully.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM,backgroundColor: Colors.lightBlue,);
-      Navigator.pop(context,true);
+   
     }
   }
 
@@ -1284,8 +1302,7 @@ class SignUpState extends State<SignUpSreen> {
       message = errorMessage.toString();
       print(message);
       Navigator.of(context, rootNavigator: true).pop();
-    Toast.show('Updated successfully.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM,backgroundColor: Colors.lightBlue,);
-      Navigator.pop(context,true);
+    
     }
   }
 
@@ -1454,5 +1471,15 @@ class SignUpState extends State<SignUpSreen> {
     apiCall();
   }
 
+  Future getImage() async {
 
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile.path);
+      List<int> imageBytes = _image.readAsBytesSync();
+      imageAsBase64 = base64Encode(imageBytes);
+    });
+    Toast.show('File Uploaded !!', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM,backgroundColor: Colors.green,);
+
+  }
 }
